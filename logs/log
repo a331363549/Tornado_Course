@@ -1,0 +1,7 @@
+[D 190327 16:48:22 selector_events:65] Using selector: EpollSelector
+[I 190327 16:48:24 web:2246] 304 GET / (::1) 17.98ms
+[W 190327 16:48:25 web:2246] 404 GET /api/check_login (::1) 24.09ms
+[W 190327 16:48:25 web:2246] 404 GET /api/house/index (::1) 3.78ms
+[W 190327 16:48:25 web:2246] 404 GET /static/plugins/swiper/js/maps/swiper.jquery.min.js.map (::1) 0.52ms
+[I 190327 16:48:25 web:2246] 200 GET /favicon.ico (::1) 0.70ms
+[W 190327 16:48:51 web:2246] 404 GET /register (::1) 1.16ms

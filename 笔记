@@ -1,0 +1,16 @@
+查看日志
+进入日志目录
+cat log
+more log
+less log
+tail log
+实时刷新日志文件
+tail -f log
+
+
+-----passwd必須先編碼之後才能進行hash操作-----
+passwd = hashlib.sha3_256((password + config.passwd_hash_key).encode('utf8')).hexdigest()
+
+------torndb 訪問數據庫 -----
+出現  torndb module itertools has not attribute izip
+此處為torndb的一處bug  將torndb.py 的138行 改成 return[Row(zip(column_names, row))for row in cursor] 即可
