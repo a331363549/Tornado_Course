@@ -10,7 +10,8 @@
   <component name="TemplatesService">
     <option name="TEMPLATE_FOLDERS">
       <list>
-        <option value="$MODULE_DIR$/chapter02/static/templates" />
+        <option value="$MODULE_DIR$/chapter02/templates" />
+        <option value="$MODULE_DIR$/chapter03/templates" />
       </list>
     </option>
   </component>
