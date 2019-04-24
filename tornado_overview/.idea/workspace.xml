@@ -57,8 +57,17 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/.gitignore">
           <provider selected="true" editor-type-id="text-editor">
-            <state>
-              <caret column="5" lean-forward="true" selection-start-column="5" selection-end-column="5" />
+            <state relative-caret-position="50">
+              <caret line="2" column="5" selection-start-line="2" selection-start-column="5" selection-end-line="2" selection-end-column="5" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/requirements.txt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="225">
+              <caret line="9" column="9" lean-forward="true" selection-start-line="9" selection-start-column="9" selection-end-line="9" selection-end-column="9" />
             </state>
           </provider>
         </entry>
@@ -118,6 +127,7 @@
         <option value="$PROJECT_DIR$/chapter02/requestHandler_subclass.py" />
         <option value="$PROJECT_DIR$/chapter02/static/templates/hello.html" />
         <option value="$PROJECT_DIR$/chapter02/template_test.py" />
+        <option value="$PROJECT_DIR$/requirements.txt" />
         <option value="$PROJECT_DIR$/.gitignore" />
       </list>
     </option>
@@ -141,11 +151,6 @@
             <path>
               <item name="tornado_overview" type="b2602c69:ProjectViewProjectNode" />
               <item name="tornado_overview" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="tornado_overview" type="b2602c69:ProjectViewProjectNode" />
-              <item name="tornado_overview" type="462c0819:PsiDirectoryNode" />
-              <item name="venv" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -311,15 +316,16 @@
       <updated>1555921756741</updated>
       <workItem from="1555921768977" duration="11103000" />
       <workItem from="1556008063174" duration="13314000" />
-      <workItem from="1556077158564" duration="276000" />
+      <workItem from="1556077158564" duration="552000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="24693000" />
+    <option name="totallyTimeSpent" value="24969000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="67" y="25" width="1853" height="1055" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.42828283" visible="true" weight="0.25595567" />
       <window_info id="Structure" order="1" sideWeight="0.57171714" side_tool="true" weight="0.2498615" />
@@ -335,7 +341,7 @@
       <window_info anchor="bottom" id="Version Control" order="8" />
       <window_info anchor="bottom" id="Database Changes" order="9" />
       <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
-      <window_info anchor="bottom" id="Terminal" order="11" weight="0.32901832" />
+      <window_info anchor="bottom" id="Terminal" order="11" visible="true" weight="0.32864866" />
       <window_info anchor="bottom" id="Python Console" order="12" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
@@ -522,10 +528,17 @@
     <entry file="file://$PROJECT_DIR$/requirePakage.txt">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
+    <entry file="file://$PROJECT_DIR$/requirements.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="225">
+          <caret line="9" column="9" lean-forward="true" selection-start-line="9" selection-start-column="9" selection-end-line="9" selection-end-column="9" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/.gitignore">
       <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret column="5" lean-forward="true" selection-start-column="5" selection-end-column="5" />
+        <state relative-caret-position="50">
+          <caret line="2" column="5" selection-start-line="2" selection-start-column="5" selection-end-line="2" selection-end-column="5" />
         </state>
       </provider>
     </entry>
