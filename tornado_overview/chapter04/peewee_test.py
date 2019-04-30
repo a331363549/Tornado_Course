@@ -1,5 +1,5 @@
-from chatper04.models.model import Suppliner, Goods
-from chatper04.data import supplier_list, goods_list
+from chapter04.models.model import Suppliner, Goods
+from chapter04.data import supplier_list, goods_list
 
 
 def save_model():
