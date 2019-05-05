@@ -9,6 +9,11 @@ from MxForum.apps.users.models import User
 from MxForum.apps.utils.AsyncYUnPian import AsyncYunPian
 
 
+class MainHandler(RedisHandler):
+    def get(self, *args, **kwargs):
+        self.write("hello world")
+
+
 class LoginHandler(RedisHandler):
     async def post(self):
         re_data = {}
@@ -25,7 +30,7 @@ class LoginHandler(RedisHandler):
                     re_data['non_fields'] = "用户名或密码错误"
                 else:
                     # 登录成功
-                    # 生活曾json web token
+                    # 生成json web token
                     payload = {
                         "id": user.id,
                         "nick_name": user.nick_name,
@@ -41,6 +46,7 @@ class LoginHandler(RedisHandler):
             except User.DoesNotExist as e:
                 self.set_status(400)
                 re_data['mobile'] = "用户不存在"
+
             self.finish(re_data)
 
 
@@ -53,7 +59,7 @@ class ResgisterHandler(RedisHandler):
         if register_form.validate():
             mobile = register_form.mobile.data
             code = register_form.code.data
-            password = register_form.code.data
+            password = register_form.password.data
             # 验证码是否正确
             redis_key = "{}_{}".format(mobile, code)
             if not self.redis_conn.get(redis_key):
@@ -65,7 +71,7 @@ class ResgisterHandler(RedisHandler):
                     existed_users = await self.application.objects.get(User, mobile=mobile)
                     self.set_status(400)
                     re_data['mobile'] = "用户已存在"
-                except Exception as e:
+                except User.DoesNotExist as e:
                     user = await self.application.objects.create(User, mobile=mobile, password=password)
                     re_data['id'] = user.id
                 # except User.DoesNotExist as e:
@@ -80,7 +86,7 @@ class ResgisterHandler(RedisHandler):
 
 class SmsHandler(RedisHandler):
     def generateCode(self):
-        sms_code = "%06d" % random.randint(0, 1000000)
+        sms_code = "%04d" % random.randint(0, 10000)
         return sms_code
 
     async def post(self):

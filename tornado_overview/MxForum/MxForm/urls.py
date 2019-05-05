@@ -5,3 +5,5 @@ from MxForum.apps.question import urls as question_urls
 urlpattern = []
 
 urlpattern += user_urls.urlpattern
+urlpattern += community_urls.urlpattern
+# urlpattern += question_urls.urlpattern

@@ -26,5 +26,5 @@ def test_register():
 
 
 if __name__ == '__main__':
-    # test_sms()
-    test_register()
+    test_sms()
+    # test_register()
