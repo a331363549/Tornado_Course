@@ -1,6 +1,6 @@
 from wtforms_tornado import Form
-from wtforms import StringField, TextAreaField
-from wtforms.validators import DataRequired, Regexp, AnyOf
+from wtforms import StringField, TextAreaField,IntegerField
+from wtforms.validators import DataRequired, Regexp, AnyOf, Length
 
 MOBILE_REGEX = "^1[358]\d{9}$|^1[48]7\d{8}$|^176\d{8}$|^1[48]5\d{8}"
 
@@ -19,3 +19,12 @@ class GroupApplyForm(Form):
 class PostForm(Form):
     title = StringField("标题", validators=[DataRequired("请输入内容")])
     content = StringField("内容", validators=[DataRequired("请输入内容")])
+
+
+class PostCommentForm(Form):
+    content = StringField("内容", validators=[DataRequired("请输入内容"), Length(min=3, message="内容不少于3个字符")])
+
+
+class CommentReplyForm(Form):
+    replyed_user = IntegerField("回复用户",validators=[DataRequired("请输入回复用户")])
+    content = StringField("内容", validators=[DataRequired("请输入内容"), Length(min=3, message="内容不少于3个字符")])

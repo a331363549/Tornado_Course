@@ -58,7 +58,7 @@ class Post(BaseModel):
 class PostComment(BaseModel):
     """评论"""
     user = ForeignKeyField(User, verbose_name="用户", related_name="author")
-    post = ForeignKeyField(Post, verbose_name="帖子")
+    post = ForeignKeyField(Post,null=True, verbose_name="帖子")
     parent_comment = ForeignKeyField('self', null=True, verbose_name="评论", related_name="comments_parent")
     reply_user = ForeignKeyField(User, verbose_name="回复用户", related_name="replayed_author", null=True)
     content = CharField(max_length=1000, verbose_name="内容")
