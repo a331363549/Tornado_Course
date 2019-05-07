@@ -9,6 +9,7 @@ settings = {
     "templates": os.path.join(BASE_DIR, 'templates'),
     # "/home/ding/桌面/github/Tornado_Course/tornado_overview/MxForum/templates",
     "secret_key": "miw5!K5mvOIXpm6a",
+    "SITE_URL": "http://192.168.79.135",
     "jwt_expire": 7 * 24 * 3600,
     "MEDIA_ROOT": os.path.join(BASE_DIR, 'media'),
     "db": {

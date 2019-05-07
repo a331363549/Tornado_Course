@@ -10,7 +10,7 @@ from MxForum.MxForm.settings import settings
 web_site_url = "http://127.0.0.1:8888"
 data = jwt.encode({
     "name": "bobby",
-    "id": 2,
+    "id": 1,
     "exp": current_time
 }, settings["secret_key"]).decode("utf8")
 
@@ -34,5 +34,27 @@ def new_group():
     print(json.loads(res.text))
 
 
+def apply_group(group_id, apply_reason):
+    data = {
+        "apply_reason": apply_reason
+    }
+    res = requests.post("{}/groups/{}/members/".format(web_site_url, group_id), headers=headers, json=data)
+    print(res.status_code)
+    print(json.loads(res.text))
+
+
+def add_post(group_id):
+    """发帖"""
+    data = {
+        "title": "我是标题",
+        "content": "我是评论",
+    }
+    res = requests.post("{}/groups/{}/posts/".format(web_site_url, group_id), headers=headers, json=data)
+    print(res.status_code)
+    print(json.loads(res.text))
+
+
 if __name__ == '__main__':
-    new_group()
+    # new_group()
+    # apply_group(1, "test")
+    add_post(1)
