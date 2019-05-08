@@ -3,6 +3,7 @@ import uuid
 
 from MxForum.MxForm.handler import RedisHandler
 # 用戶是否已登录
+from MxForum.apps.message.models import Message
 from MxForum.apps.question.models import *
 from MxForum.apps.question.forms import *
 from MxForum.apps.utils.mxform_decorators import authenticated_async
@@ -11,6 +12,69 @@ import aiofiles
 import os
 from playhouse.shortcuts import model_to_dict
 from MxForum.apps.utils.util_func import json_serial
+
+
+class AnswerReplyHandler(RedisHandler):
+    @authenticated_async
+    async def get(self, answer_id):
+        """刷新回复消息"""
+        re_data = []
+        try:
+            answer_replys = await self.application.objects.execute(
+                Answer.extend().where(Answer.parent_answer_id == int(answer_id)))
+            for item in answer_replys:
+                item_dict = {
+                    "user": model_to_dict(item.user),
+                    "content": item.content,
+                    "reply_nums": item.reply_nums,
+                    "add_time": item.add_time.strftime("%Y-%m-%d"),
+                    "id": item.id
+                }
+                re_data.append(item_dict)
+        except Answer.DoesNotExist as e:
+            self.set_status(404)
+        self.finish(json.dumps(re_data, default=json_serial))
+
+    @authenticated_async
+    async def post(self, answer_id):
+        """添加回复"""
+        re_data = {}
+        param = self.request.body.decode("utf8")
+        param = json.loads(param)
+        form = AnswerReplyForm.from_json(param)
+        if form.validate():
+            try:
+                answer = await self.application.objects.get(Answer, id=int(answer_id))
+                reply_user = await self.application.objects.get(User, id=form.replyed_user.data)
+
+                reply = await self.application.objects.create(Answer, user=self.current_user,
+                                                              question=answer.question_id,
+                                                              parent_answer=answer, reply_user=reply_user,
+                                                              content=form.content.data)
+
+                # 修改comment的回复数
+                answer.reply_nums += 1
+                await self.application.objects.update(answer)
+                re_data['id'] = reply.id
+                re_data["user"] = {
+                    "id": self.current_user.id,
+                    "nick_name": self.current_user.nick_name
+                }
+                # 发送回答回复消息 type=5
+                await self.application.objects.create(Message, sender=self.current_user, message_type=5,
+                                                      receiver=reply_user, parent_content=answer.content,
+                                                      message=form.content.data)
+
+            except User.DoesNotExist as e:
+                self.set_status(400)
+                re_data["replyed_user"] = "用户不存在"
+            except Answer.DoesNotExist as e:
+                self.set_status(404)
+        else:
+            self.set_status(400)
+            for field in form.errors:
+                re_data[field] = form.errors[field][0]
+        self.finish(re_data)
 
 
 class AnswerHandler(RedisHandler):
@@ -33,6 +97,7 @@ class AnswerHandler(RedisHandler):
                     "id": item.id
                 }
                 re_data.append(item_dict)
+
         except Question.DoesNotExist as e:
             self.set_status(404)
         self.finish(json.dumps(re_data, default=json_serial))
@@ -57,6 +122,11 @@ class AnswerHandler(RedisHandler):
                     "nick_name": self.current_user.nick_name,
                     "id": self.current_user.id
                 }
+                # 发送回答消息 type=4
+                receiver = await self.application.objects.get(User, id=question.user_id)
+                await self.application.objects.create(Message, sender=self.current_user, message_type=4,
+                                                      receiver=receiver, parent_content=question.title,
+                                                      message=form.content.data)
             except Question.DoesNotExist as e:
                 self.set_status(404)
         else:

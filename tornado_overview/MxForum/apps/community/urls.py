@@ -9,6 +9,7 @@ POST_DETAIL_URI = "/posts/([0-9]+)/"
 COMMENT_URI = "/posts/([0-9]+)/comments/"
 COMMENT_REPLY_URI = "/comments/([0-9]+)/replys/"
 LIKES_URI = "/comments/([0-9]+)/likes/"
+APPLY_URI = "/applys/"
 
 urlpattern = (
     url(GROUP_URI, GroupHandler),
@@ -17,7 +18,9 @@ urlpattern = (
     url(POST_URI, PostHandler),
     url(POST_DETAIL_URI, PostDetailHandler),
     url(COMMENT_URI, PostCommentHandler),
-    url(COMMENT_REPLY_URI, CommentReplayHandler),
+    url(COMMENT_REPLY_URI, CommentReplyHandler),
     url(LIKES_URI, LikeHandler),
+    url(APPLY_URI, ApplyHandler),
+    url("/members/([0-9]+)/", HandleApplyHanlder)
 
 )

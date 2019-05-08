@@ -94,6 +94,6 @@ if __name__ == '__main__':
     # apply_group(1, "test")
     # add_post(1)
     # get_post(100)
-    # add_comment(1)
+    add_comment(1)
     # get_comment(1)
     add_replys(1)

@@ -5,12 +5,67 @@ from MxForum.MxForm.handler import RedisHandler
 # 用戶是否已登录
 from MxForum.apps.community.models import *
 from MxForum.apps.community.forms import *
+from MxForum.apps.message.models import Message
 from MxForum.apps.utils.mxform_decorators import authenticated_async
 
 import aiofiles
 import os
 from playhouse.shortcuts import model_to_dict
 from MxForum.apps.utils.util_func import json_serial
+
+
+class HandleApplyHanlder(RedisHandler):
+    @authenticated_async
+    async def patch(self, apply_id):
+        """处理用户申请"""
+        re_data = {}
+        param = self.request.body.decode("utf8")
+        param = json.loads(param)
+        form = HandleApplyForm.from_json(param)
+        if form.validate():
+            status = form.status.data
+            handle_msg = form.handle_msg.data
+            try:
+                member = await self.application.objects.get(CommunityGroupMember, id=int(apply_id))
+                member.status = status
+                member.hanld_msg = handle_msg
+                member.handle_time = datetime.now()
+                await self.application.objects.update(member)
+            except CommunityGroupMember.DoesNotExist as e:
+                self.set_status(404)
+        else:
+            self.set_status(400)
+            for field in form.errors:
+                re_data[field] = form.errors[field][0]
+        self.finish(re_data)
+
+
+class ApplyHandler(RedisHandler):
+    @authenticated_async
+    async def get(self):
+        """小组申请处理"""
+        re_data = []
+        all_groups = await self.application.objects.execute(
+            CommunityGroup.select().where(CommunityGroup.creator_id == self.current_user.id))
+        all_groups_id = [group.id for group in all_groups]
+
+        group_member_query = CommunityGroupMember.extend().where(CommunityGroupMember.community_id.in_(all_groups_id),
+                                                                 CommunityGroupMember.status.is_null(True))
+        all_members = await self.application.objects.execute(group_member_query)
+        for member in all_members:
+            url = ""
+            re_data.append({
+                "user": {
+                    "id": member.user.id,
+                    "nick_name": member.user.nick_name,
+                    "head_url": url if member.user.head_url else ""
+                },
+                "group": member.community.name,
+                "id": member.id,
+                "apply_reason": member.apply_reason,
+                "add_time": member.add_time.strftime("%Y-%m-%d %H:%M:%S")
+            })
+        self.finish(json.dumps(re_data))
 
 
 class LikeHandler(RedisHandler):
@@ -25,12 +80,16 @@ class LikeHandler(RedisHandler):
             comment.like_nums += 1
             await self.application.objects.update(comment)
             re_data['id'] = comment_like.id
+            # 发送点赞消息 type=3
+            receiver = await self.application.objects.get(User, id=comment.user_id)
+            await self.application.objects.create(Message, sender=self.current_user, message_type=3,
+                                                  receiver=receiver, parent_content=comment.content, )
         except PostComment.DoesNotExist as e:
             self.set_status(404)
         self.finish(re_data)
 
 
-class CommentReplayHandler(RedisHandler):
+class CommentReplyHandler(RedisHandler):
     @authenticated_async
     async def get(self, comment_id):
         """刷新回复消息"""
@@ -61,10 +120,10 @@ class CommentReplayHandler(RedisHandler):
         if form.validate():
             try:
                 comment = await self.application.objects.get(PostComment, id=int(comment_id))
-                replyed_user = await self.application.objects.get(User, id=form.replyed_user.data)
+                reply_user = await self.application.objects.get(User, id=form.replyed_user.data)
 
                 reply = await self.application.objects.create(PostComment, user=self.current_user,
-                                                              parent_comment=comment, replyed_user=replyed_user,
+                                                              parent_comment=comment, reply_user=reply_user,
                                                               content=form.content.data)
 
                 # 修改comment的回复数
@@ -76,6 +135,10 @@ class CommentReplayHandler(RedisHandler):
                     "nick_name": self.current_user.nick_name
                 }
 
+                # 发送回复消息 type=2
+                await self.application.objects.create(Message, sender=self.current_user, message_type=2,
+                                                      receiver=reply_user, parent_content=comment.content,
+                                                      message=form.content.data)
             except User.DoesNotExist as e:
                 self.set_status(400)
                 re_data["replyed_user"] = "用户不存在"
@@ -139,6 +202,12 @@ class PostCommentHandler(RedisHandler):
                 re_data["user"] = {}
                 re_data["user"]["nick_name"] = self.current_user.nick_name
                 re_data["user"]["id"] = self.current_user.id
+
+                # 发送评论消息 type=1
+                receiver = await self.application.objects.get(User, id=post.user_id)
+                await self.application.objects.create(Message, sender=self.current_user, message_type=1,
+                                                      receiver=receiver, parent_content=post.title,
+                                                      message=form.content.data)
             except Post.DoesNotExist as e:
                 self.set_status(404)
         else:
