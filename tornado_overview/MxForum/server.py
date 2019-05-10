@@ -6,9 +6,9 @@ from MxForum.MxForm.urls import urlpattern
 from MxForum.MxForm.settings import settings, database
 
 if __name__ == "__main__":
-
-    #集成json到wtforms
+    # 集成json到wtforms
     import wtforms_json
+
     wtforms_json.init()
 
     app = web.Application(urlpattern, debug=True, **settings)

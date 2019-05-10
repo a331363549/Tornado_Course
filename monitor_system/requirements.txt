@@ -1,0 +1,6 @@
+tornado
+mysql-connector-python # 数据库链接驱动
+sockjs-tornado         # 数据库ORM
+psutil                 # websocket通信
+pyecharts              # 获取系统硬件信息
+pyecharts-snapshot     # 可视化图标分析
