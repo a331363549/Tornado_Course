@@ -6,7 +6,7 @@ settings = {
     "static_path": os.path.join(BASE_DIR, 'static'),
     # "/home/ding/桌面/github/Tornado_Course/tornado_overview/MxForum/static",
     "static_url_preifx": "/static/",
-    "templates": os.path.join(BASE_DIR, 'templates'),
+    "template_path": os.path.join(BASE_DIR, 'templates'),
     # "/home/ding/桌面/github/Tornado_Course/tornado_overview/MxForum/templates",
     "secret_key": "miw5!K5mvOIXpm6a",
     "SITE_URL": "http://192.168.79.135",

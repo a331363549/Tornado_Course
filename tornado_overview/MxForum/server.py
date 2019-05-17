@@ -1,5 +1,6 @@
 from tornado import web
 import tornado
+import tornado.options
 from peewee_async import Manager
 
 from MxForum.MxForm.urls import urlpattern
@@ -10,7 +11,6 @@ if __name__ == "__main__":
     import wtforms_json
 
     wtforms_json.init()
-
     app = web.Application(urlpattern, debug=True, **settings)
     app.listen(8888)
 

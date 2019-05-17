@@ -12,6 +12,8 @@
       <list>
         <option value="$MODULE_DIR$/chapter02/templates" />
         <option value="$MODULE_DIR$/chapter03/templates" />
+        <option value="$MODULE_DIR$/MxForum/templates" />
+        <option value="$MODULE_DIR$/ihome/templates" />
       </list>
     </option>
   </component>

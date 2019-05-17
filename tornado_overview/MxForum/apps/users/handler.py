@@ -16,7 +16,8 @@ from MxForum.apps.utils.util_func import json_serial
 
 class MainHandler(RedisHandler):
     def get(self, *args, **kwargs):
-        self.write("hello world")
+        # self.write("hello world")
+        self.render("index.html")
 
 
 class ChangePasswordHandler(RedisHandler):

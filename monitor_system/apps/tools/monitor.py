@@ -15,7 +15,7 @@ class Monitor(object):
         data = dict(
             # percpu True每个CPU的使用率 False 平均使用率
             # interval 1.平均 2.单独 3.物理cpu核心数 4.逻辑cpu核心数
-            percent_avg=psutil.cpu_percent(interval=0, percpu=False),
+            percent_avg=psutil.cpu_percent(interval=0, percpu=True),
             percent_per=psutil.cpu_percent(interval=0, percpu=True),
             num_p=psutil.cpu_count(logical=False),
             num_l=psutil.cpu_count(logical=True)
@@ -118,6 +118,6 @@ class Monitor(object):
 
 if __name__ == '__main__':
     m = Monitor()
-    # print(m.cpu())
+    print(m.cpu())
     # print(m.memory())
-    pprint(m.logined_user())
+    # pprint(m.logined_user())
